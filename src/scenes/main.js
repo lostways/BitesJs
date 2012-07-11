@@ -4,27 +4,27 @@ Crafty.scene("main", function() {
         "src/entities/wall.js",
 		"src/entities/body.js",
 		"src/entities/snake.js",
+		"src/levels/level.js",
 		"src/levels/maps.js",
-        /*"src/interfaces/info.js" */
+		"src/interfaces/scorebox.js",
 	];
 	
 	//when everything is loaded, run the main scene
 	require(elements, function() {	   
-		/*sc['ufo'] = new Ufo(); */
+
 		//load map
 		
-		levelOneMap = new Maps();
-		levelOneMap.loadMap('level1');
-		levelOneMapArray = levelOneMap.get('mapArray');
+		gameMap = new Maps();
+		currentLevel = gameMap.loadMap('level1');
 		
 		//loop through the grid
-		for (var i = 0; i < 24; i++) {
-			for (var j = 0; j < 24; j++) {
+		for (var i = 0; i < currentLevel.get('height'); i++) {
+			for (var j = 0; j < currentLevel.get('width'); j++) {
 				//is this a wall element
 				//console.log(levelOneMapArray[j][i]);
-				if(levelOneMapArray[j][i] === 1) {
+				if(currentLevel.get('map')[i][j] === 1) {
 					sc['wall' + i + j] = new Wall();
-					sc['wall' + i + j].get('entity').attr({x: i * gameContainer.conf.get('gridSize'), y: j * gameContainer.conf.get('gridSize')});
+					sc['wall' + i + j].get('entity').attr({x: j * gameContainer.conf.get('gridSize'), y: (i + 3) * gameContainer.conf.get('gridSize')});
 				} else {
 					//if not a wall
 				}
@@ -33,7 +33,7 @@ Crafty.scene("main", function() {
 		
 		//sc['wall1'] = new Wall();
 		sc['player1'] = new Snake();
-		//infc['info'] = new Info();
+		infc['scorePlayer1'] = new Scorebox({name: sc['player1'].get('name'),score: sc['player1'].get('score'),lives: sc['player1'].get('lives')});
 	});
 
 });

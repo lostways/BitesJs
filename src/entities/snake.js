@@ -3,7 +3,11 @@
 Snake = BaseEntity.extend({
 	defaults: {
 		'color': 'blue',
-		'bodySize': 0
+		'bodySize': 0,
+		'name' : 'Sammy',
+		'lives' : 5,
+		'score' : 0,
+		'alive' : true
     },
 	//entity: {},
 	body: [],
@@ -14,7 +18,7 @@ Snake = BaseEntity.extend({
 		//model.set({'body': []});
 		
     	entity
-            .attr({w: gameContainer.conf.get('gridSize'), h: gameContainer.conf.get('gridSize'), x: 100, y: 20})
+            .attr({w: gameContainer.conf.get('gridSize'), h: gameContainer.conf.get('gridSize'), x: 200, y: 200})
 			.color(model.get('color'))
 			.bind('KeyDown', function () {
 				if(this.isDown('A') || this.isDown('LEFT_ARROW')) {
@@ -115,8 +119,9 @@ Snake = BaseEntity.extend({
 		model.set({'body': bodyArray});
 		model.set({'bodySize': model.get('body').length});
     },
+	//grow function
 	grow: function (amount) {
 		var amount = typeof amount !== 'undefined' ? amount : 1;
 		this.set({'bodySize': this.get('bodySize') + amount});
-	} 
+	}
 });

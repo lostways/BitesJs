@@ -1,9 +1,11 @@
 Config = Backbone.Model.extend({
     defaults: {
         'renderType' : 'Canvas',
-		'mapWidth' : 400,
-		'mapHeight' : 400,
-		'gridSize' : 16
+		'stageWidth' : 800,
+		'stageHeight' : 500,
+		'gridSize' : 10,
+		'gridWidth' : 50,
+		'gridHeight' : 80
     },
     initialize: function() {
        if(gameContainer.env === 'dev') {
