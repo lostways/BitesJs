@@ -2,6 +2,7 @@ Crafty.scene("main", function() {
 
 	var elements = [
         "src/entities/wall.js",
+		"src/entities/body.js",
 		"src/entities/snake.js",
 		"src/levels/maps.js",
         /*"src/interfaces/info.js" */
@@ -20,10 +21,10 @@ Crafty.scene("main", function() {
 		for (var i = 0; i < 24; i++) {
 			for (var j = 0; j < 24; j++) {
 				//is this a wall element
-				console.log(levelOneMapArray[j][i]);
+				//console.log(levelOneMapArray[j][i]);
 				if(levelOneMapArray[j][i] === 1) {
 					sc['wall' + i + j] = new Wall();
-					sc['wall' + i + j].get('entity').attr({x: i * 16, y: j * 16});
+					sc['wall' + i + j].get('entity').attr({x: i * gameContainer.conf.get('gridSize'), y: j * gameContainer.conf.get('gridSize')});
 				} else {
 					//if not a wall
 				}
