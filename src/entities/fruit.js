@@ -1,27 +1,25 @@
 /* Enity for a wall block */
 
-Body = BaseEntity.extend({
+Fruit = BaseEntity.extend({
 	defaults: {
-		'color': 'green',
-		'posX': 0,
-		'posY': 0,
+		'color': 'red',
+		'posX' : 0,
+		'posY' : 0,
     },
     initialize: function(){
     	var model = this;
-    	var entity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Collision, Color, Body");
-		
+    	var entity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Collision, Color, Fruit"); 
     	entity
             .attr({w: gameContainer.conf.get('gridSize'), h: gameContainer.conf.get('gridSize'), x: model.get('posX'), y: model.get('posY')})
 			.color(model.get('color'))
             .bind('EnterFrame', function(e){
-				
+
             })
-            .bind('Click', function(){
-                
-            })
-            .setName('Body');
+			.onHit("Snake", function () {
+				this.destroy();
+			})
+            .setName('Fruit');
 			
     	model.set({'entity' : entity });
-		//model.set({'currDirection' : {x: 0, y: 0}});
     }
 });
