@@ -85,54 +85,53 @@ Snake = BaseEntity.extend({
 						model.set({'eatenThisLevel': model.get('eatenThisLevel') + 1});
 						model.set({'score': model.get('score') + model.get('eatenThisLevel')});
 					} else {
-						//theWorld.win(this);
+						Crafty.trigger('NextLevel');
 					}
 				} 
 				if(this.hit('Solid')){
 					//console.log(hitArray); 
-					//this.attr({x: from.x, y:from.y});
+					this.attr({x: from.x, y:from.y});
 					if (model.get('lives') > 1) {
+						infobox = new Infobox({'text': model.get('name') + " Dies! Push Space! --->", 'actionToTrigger': 'LevelRestart'});
 						model.set({'lives': model.get('lives') - 1});
 						currDirection = {x:0, y:0};
-						model.reset();
 					} else {
 						alert("Your Dead");
 						Crafty.scene("main");
 					}
 					//theWorld.died(this);
-				} else {
-					//move body parts
-					var oldX = 0;
-					var oldY = 0;
-					for (i = 0; i < model.get('bodySize'); i++) {
-						if(i === 0) {
-							var prevX = from.x;
-							var prevY = from.y;
-							//prevDirection = currDirection;
-						} else {
-							//prevDirection = model.get('body')[i - 1].get('currDirection');
-						}
-						
-						
-						
-						if(typeof model.get('body')[i] !== 'object') { //if this is a new body piece
-								model.get('body')[i] = new Body({'posX': prevX, 'posY': prevY});
-								oldX = prevX;
-								oldY = prevY;
-						} else {
-							//move body part		
-							oldX = model.get('body')[i].get('entity').x;
-							oldY = model.get('body')[i].get('entity').y;
-							model.get('body')[i].get('entity').x = prevX;
-							model.get('body')[i].get('entity').y = prevY;
-						}
-						prevX = oldX;
-						prevY = oldY;
-						
+				} else { 
+						//move body parts
+						var oldX = 0;
+						var oldY = 0;
+						for (i = 0; i < model.get('bodySize'); i++) {
+							if(i === 0) {
+								var prevX = from.x;
+								var prevY = from.y;
+								//prevDirection = currDirection;
+							} else {
+								//prevDirection = model.get('body')[i - 1].get('currDirection');
+							}							
+							if(typeof model.get('body')[i] !== 'object') { //if this is a new body piece
+									model.get('body')[i] = new Body({'posX': prevX, 'posY': prevY});
+									oldX = prevX;
+									oldY = prevY;
+							} else {
+								//move body part		
+								oldX = model.get('body')[i].get('entity').x;
+								oldY = model.get('body')[i].get('entity').y;
+								model.get('body')[i].get('entity').x = prevX;
+								model.get('body')[i].get('entity').y = prevY;
+							}
+							prevX = oldX;
+							prevY = oldY;
+						}	
 							
-					}
 				}
 				
+			})
+			.bind("LevelRestart", function () {
+				model.reset();
 			})
             .setName('Snake');
 			
@@ -163,6 +162,8 @@ Snake = BaseEntity.extend({
 		bodyArray[1].get('entity').attr({x: this.get('entity').x - gameContainer.conf.get('gridSize') * 2, y: this.get('entity').y});
 		this.set({'body': bodyArray});
 		this.set({'bodySize': this.get('body').length});
+		this.set({'nextGrowAmount' : this.defaults.nextGrowAmount});
+		this.set({'eatenThisLevel' : this.defaults.eatenThisLevel});
 		
 		
 	}

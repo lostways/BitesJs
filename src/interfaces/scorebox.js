@@ -13,8 +13,8 @@ Scorebox = BaseEntity.extend({
             .attr({x: 0, y: 0, z: 1, w: gameContainer.conf.get('stageWidth')})
             //.text(infoText)
             .textColor('#000')
-            .textFont({'size' : '24px', 'family': 'Arial'})
-			.css({'text-align': 'right'})
+            //.textFont({'size' : '20px', 'family': 'Arial'})
+			.css({fontSize : '15px', 'font-family': 'Arial','text-align': 'right'})
             .bind('Click', function(){
                                 
             })

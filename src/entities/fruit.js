@@ -18,6 +18,9 @@ Fruit = BaseEntity.extend({
 			.onHit("Snake", function () {
 				this.destroy();
 			})
+			.bind("LevelRestart", function () {
+				this.destroy();
+			})
             .setName('Fruit');
 			
     	model.set({'entity' : entity });

@@ -7,16 +7,33 @@ Holds game states
 World = BaseEntity.extend({
 	 defaults: {
         'currentLevel': null,
-		'maxEaten': 9,
-		'numPlayers': 1
+		'maxEaten': 2,
+		'numPlayers': 1,
+		'currentLevelNum': 1,
+		'maxLevels' : 9,
     },
     initialize: function(){
     	var model = this;
-    	var entity = Crafty.e();
+    	var entity = Crafty.e("Keyboard");
     	entity
             .bind('EnterFrame', function(e){
 				model.updateScores();
             })
+			.bind('KeyDown', function() {
+				if(this.isDown('SPACE')) {
+					//Crafty.pause(); //must fix pause timer bug in Crafty before we can pause the game
+				}
+			})
+			.bind('LevelRestart', function () {
+				model.placeFruit();
+			})
+			.bind('NextLevel', function () {
+				Crafty.pause();
+				model.set({'currentLevelNum' : model.get('currentLevelNum') + 1});
+				model.displayMap('level' + model.get('currentLevelNum'));
+				//Crafty.trigger('LevelRestart');
+				infobox = new Infobox({'text': "Level " +  model.get('currentLevel').get('name') + " Push Space", 'actionToTrigger': 'LevelRestart'});
+			})
             .setName('World');
     	model.set({'entity' : entity });
 		
