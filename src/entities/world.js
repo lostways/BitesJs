@@ -25,28 +25,35 @@ World = BaseEntity.extend({
 				}
 			})
 			.bind('LevelRestart', function () {
+				model.displayMap(model.get('currentLevel'));
 				model.placeFruit();
 			})
 			.bind('NextLevel', function () {
-				Crafty.pause();
+				
 				model.set({'currentLevelNum' : model.get('currentLevelNum') + 1});
-				model.displayMap('level' + model.get('currentLevelNum'));
-				//Crafty.trigger('LevelRestart');
+				model.loadMap('level' + model.get('currentLevelNum'));
 				infobox = new Infobox({'text': "Level " +  model.get('currentLevel').get('name') + " Push Space", 'actionToTrigger': 'LevelRestart'});
+				
 			})
             .setName('World');
     	model.set({'entity' : entity });
 		
-		this.displayMap('level1');
+		this.loadMap('level1',this.displayMap);
 		this.placeFruit();
 		this.placeSnake();
 		this.updateScores();
     },
-	displayMap: function (level) {
+	loadMap: function (level,callback) {
 		//load map
 		
 		gameMap = new Maps();
 		currentLevel = gameMap.loadMap(level);
+		this.set({'currentLevel': currentLevel});
+		
+		if(typeof callback === 'function') {callback(currentLevel);};
+		
+	},
+	displayMap: function (currentLevel) {
 		
 		//loop through the grid
 		for (var i = 0; i < currentLevel.get('height'); i++) {
@@ -62,7 +69,7 @@ World = BaseEntity.extend({
 			} //end for j
 		} //end for i
 		
-		this.set({'currentLevel': currentLevel});
+		
 	},
 	placeFruit: function () {
 		//place fruit

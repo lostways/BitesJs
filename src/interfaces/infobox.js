@@ -9,7 +9,7 @@ Infobox = BaseEntity.extend({
     },
     initialize: function(){
 		//pause the game
-		if(!Crafty.isPaused()) { Crafty.pause() };
+		if(!Crafty.isPaused()) { Crafty.pause(); };
 		var model = this;
     	var entity = Crafty.e("2D, DOM, Text, Keyboard");
 		if (this.get('posX') === null) { this.set({'posX': (gameContainer.conf.get('stageWidth') / 2) - 250}); }
@@ -33,8 +33,9 @@ Infobox = BaseEntity.extend({
 			.bind('KeyDown', function() {
 				if(this.isDown('SPACE')) {
 					if(Crafty.isPaused()) {Crafty.pause();}
-					Crafty.trigger(model.get('actionToTrigger'));
 					this.destroy();
+					Crafty.trigger(model.get('actionToTrigger'));
+					
 				}
 			})
 			.bind('EnterFrame', function() {

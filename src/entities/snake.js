@@ -78,7 +78,7 @@ Snake = BaseEntity.extend({
             .bind('Moved', function(from) {
 				if(hitByFruit = this.hit('Fruit')) {
 					//console.log(hitByFruit);
-					if(model.get('eatenThisLevel') !== theWorld.get('maxEaten')) {
+					if(model.get('eatenThisLevel') < theWorld.get('maxEaten')) {
 						theWorld.placeFruit();
 						model.grow(model.get('nextGrowAmount'));
 						model.set({'nextGrowAmount': model.get('nextGrowAmount') + 4});
@@ -151,9 +151,9 @@ Snake = BaseEntity.extend({
 		this.get('entity').attr({x: this.get('startX'), y: this.get('startY')});
 		
 		//destory old body
-		for ( i in this.get('body') ) {
-			this.get('body')[i].get('entity').destroy();
-		}
+		//for ( i in this.get('body') ) {
+		//	this.get('body')[i].get('entity').destroy();
+		//}
 		
 		var bodyArray = [];
 		bodyArray[0] = new Body();
@@ -164,6 +164,7 @@ Snake = BaseEntity.extend({
 		this.set({'bodySize': this.get('body').length});
 		this.set({'nextGrowAmount' : this.defaults.nextGrowAmount});
 		this.set({'eatenThisLevel' : this.defaults.eatenThisLevel});
+		currDirection = {x:0, y:0};
 		
 		
 	}

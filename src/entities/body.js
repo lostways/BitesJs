@@ -19,6 +19,9 @@ Body = BaseEntity.extend({
             .bind('Click', function(){
                 
             })
+			.bind("LevelRestart", function () {
+				this.destroy();
+			})
             .setName('Body');
 			
     	model.set({'entity' : entity });
