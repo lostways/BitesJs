@@ -7,9 +7,7 @@ Infobox = BaseEntity.extend({
 		'actionToTrigger' : '',
 		//'cName' : 'Player1'
     },
-    initialize: function(){
-		//pause the game
-		if(!Crafty.isPaused()) { Crafty.pause(); };
+    initialize: function(){		
 		var model = this;
     	var entity = Crafty.e("2D, DOM, Text, Keyboard");
 		if (this.get('posX') === null) { this.set({'posX': (gameContainer.conf.get('stageWidth') / 2) - 250}); }
@@ -18,27 +16,32 @@ Infobox = BaseEntity.extend({
 		entity
 			.attr({x: model.get('posX'), y: model.get('posY'), w: 500,h:35, z: 10000})
             .text(model.get('text'))
-            .textColor('#000')
+            //.textColor('#FFF')
             //.textFont({'size' : '10px', 'family': 'Arial'})
 			.css({	'font-size' : '20px', 
 					'font-family': 'Arial',
 					'text-align': 'center', 
 					'valign': 'middle',
-					'border': 'solid 10px #00F', 
-					'background-color' : '#0F0' 
+					'border': 'solid 10px #FFF', 
+					'background-color' : 'red',
+					'color' : '#FFF'	
 				})
             .bind('Click', function(){
                                 
             })
 			.bind('KeyDown', function() {
 				if(this.isDown('SPACE')) {
-					if(Crafty.isPaused()) {Crafty.pause();}
 					this.destroy();
-					Crafty.trigger(model.get('actionToTrigger'));
+					if(Crafty.isPaused()) {Crafty.pause();}
+					var action = model.get('actionToTrigger');
+					if(action !== '') {
+						Crafty.trigger(action);
+					}
 					
 				}
 			})
 			.bind('EnterFrame', function() {
+			if(!Crafty.isPaused()) { Crafty.pause() };
 				//var infoText = model.get('name') + " --> &nbsp&nbsp&nbsp Lives: " + model.get('lives') + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" +  model.get('score');
 				//this.text(infoText);
 			})

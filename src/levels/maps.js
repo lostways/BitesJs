@@ -52,44 +52,64 @@ Maps = Backbone.Model.extend ({
 											[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]	],
 								'width' : 80,
 								'height' : 47,
-								'startRow' : 40,
-								'startCol' : 23,
+								'startRow' : 25,
+								'startCol' : 50,
 								'name' : 'One',
-								//'startDir' : {'x' : 0, 'y': -1}
+								'startDir' : {'x' : 1, 'y': 0}
 							}),
 		'level2' : new Level({
 								'map' : [],
 								'width' : 80,
 								'height' : 47,
-								'startRow' : 40,
-								'startCol' : 23,
+								'startRow' : 7,
+								'startCol' : 60,
 								'name' : 'Two',
-								//'startDir' : {'x' : 0, 'y': -1}
+								'startDir' : {'x' : -1, 'y': 0}
 							}),
+		'level3' : new Level({
+						'map' : [],
+						'width' : 80,
+						'height' : 47,
+						'startRow' : 25,
+						'startCol' : 50,
+						'name' : 'Three',
+						'startDir' : {'x' : 0, 'y': -1}
+					}),
+					
     },
     initialize: function(){
-		//clone maps
-		var level1Map = this.get('level1').get('map').clone();
-		this.get('level2').set({'map' : level1Map });
+		
     },
 	loadMap: function (mapName) {
 		
 		if (mapName === "level1") {
 			return this.get(mapName);
 		}
+		//clone level 1 maps
+		
+		this.get(mapName).set({'map' : this.get('level1').get('map').clone() });
+		
+		//Generate level maps
+		switch (mapName) {
+			case 'level2' :
+				for (i = 20; i < 60; i++) {
+					this.get(mapName).get('map')[25][i] = 1;
+				}
+				break;
+			case 'level3' :
+				for (i = 10; i < 40; i++) {
+					this.get(mapName).get('map')[i][20] = 1;
+					this.get(mapName).get('map')[i][60] = 1;
+				}
+				break;
+		}
 		
 		//create map
-		for (i = 0; i < this.get(mapName).get('height'); i++) {
-			for (j = 0; j < this.get(mapName).get('width'); j++) {
-				switch (mapName) {
-					case 'level2' :
-						if (i === 25 && (j >= 20 && j<=60)) {
-							this.get(mapName).get('map')[i][j] = 1;
-						}
-						break;
-				}
-			}
-		}
+		//for (i = 0; i < this.get(mapName).get('height'); i++) {
+		//	for (j = 0; j < this.get(mapName).get('width'); j++) {
+		//		
+		//	}
+		//}
 		
 		return this.get(mapName);
 		

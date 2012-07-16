@@ -1,12 +1,13 @@
 Crafty.scene("main", function() {
 
 	var elements = [
-		"src/levels/level.js",
         "src/entities/wall.js",
+		"src/entities/floor.js",
 		"src/entities/fruit.js",
 		"src/entities/body.js",
 		"src/entities/snake.js",
 		"src/entities/world.js",
+		"src/levels/level.js",
 		"src/levels/maps.js",
 		"src/interfaces/scorebox.js",
 		"src/interfaces/infobox.js",

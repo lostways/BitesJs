@@ -2,7 +2,7 @@
 
 Snake = BaseEntity.extend({
 	defaults: {
-		'color': 'blue',
+		'color': '#FFFF55',
 		'bodySize': 0,
 		'name' : 'Sammy',
 		'lives' : 5,
@@ -10,80 +10,92 @@ Snake = BaseEntity.extend({
 		'nextGrowAmount' : 4,
 		'eatenThisLevel': 0, //number of fruits this snake has eaten this level
 		'alive' : true,
+		'playable' : false, //is the snake in play or being paused and/or initialized
 		'startX': 0,
 		'startY': 0,
+		'startDir' : {x:0, y:0}
     },
 	//entity: {},
 	body: [],
     initialize: function(){
     	var model = this;
-    	var currDirection = {x:0, y:0};
+    	var currDirection = model.get('startDir');
+		var changingDirections = false;
 		var entity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Collision, Color, Keyboard, Snake, Scorebox");
 		//model.set({'body': []});
 		
     	entity
-            .attr({w: gameContainer.conf.get('gridSize'), h: gameContainer.conf.get('gridSize')})
+            .attr({w: gameContainer.conf.get('gridSize'), h: gameContainer.conf.get('gridSize'), z: 500})
 			.color(model.get('color'))
 			.bind('KeyDown', function () {
-				if(this.isDown('A') || this.isDown('LEFT_ARROW')) {
-					this.trigger('NewDirection', {x: -1, y: 0});
-				}else
-				if(this.isDown('S') || this.isDown('DOWN_ARROW')) {
-					this.trigger('NewDirection', {x: 0, y: 1});
-				}else
-				if(this.isDown('D')  || this.isDown('RIGHT_ARROW')) {
-					this.trigger('NewDirection', {x: 1, y: 0});
-				}else
-				if(this.isDown('W')  || this.isDown('UP_ARROW')) {
-					this.trigger('NewDirection', {x: 0, y: -1});
-				}
+				if(changingDirections !== true && model.get('playable') === true) {	//if we are not currently in between snake moves
+					
+					if(this.isDown('A') || this.isDown('LEFT_ARROW') && currDirection.x !== 1) {
+						this.trigger('NewDirection', {x: -1, y: 0});
+					} else
+					if(this.isDown('S') || this.isDown('DOWN_ARROW')  && currDirection.y !== -1) {
+						this.trigger('NewDirection', {x: 0, y: 1});
+					} else
+					if(this.isDown('D')  || this.isDown('RIGHT_ARROW')  && currDirection.x !== -1) {
+						this.trigger('NewDirection', {x: 1, y: 0});
+					} else
+					if(this.isDown('W')  || this.isDown('UP_ARROW')  && currDirection.y !== 1) {
+						this.trigger('NewDirection', {x: 0, y: -1});
+					}
 				
+				}
 				if(this.isDown('R')) {
 					model.grow();
 				}
 			})
 			.bind('EnterFrame', function(e){
-				if (Crafty.frame() % 5 !== 0) {return;} //SLOW DOWN
+				 if(Crafty.frame() % 5 !== 0) {return;} //SLOW DOWN
 				
-				var orgX = this.x;
-				var orgY = this.y;
+				if (model.get('playable') === true) { 
 				
-				if (currDirection.x < 0) {
-					this.x = this.x - gameContainer.conf.get('gridSize');
-				} 
-				if (currDirection.x > 0) {
-					this.x = this.x + gameContainer.conf.get('gridSize');
-				} 
-				if (currDirection.y < 0) {
-					this.y = this.y - gameContainer.conf.get('gridSize');
-				} 
-				if (currDirection.y > 0) {
-					this.y = this.y + gameContainer.conf.get('gridSize');
-				}
-				
-				
-				
-				//trigger moved event
-				if(this.x !== orgX || this.y !== orgY) {
-					this.trigger('Moved', { x: orgX, y: orgY});
+					var orgX = this.x;
+					var orgY = this.y;
 					
+					if (currDirection.x < 0) {
+						this.x = this.x - gameContainer.conf.get('gridSize');
+					} 
+					if (currDirection.x > 0) {
+						this.x = this.x + gameContainer.conf.get('gridSize');
+					} 
+					if (currDirection.y < 0) {
+						this.y = this.y - gameContainer.conf.get('gridSize');
+					} 
+					if (currDirection.y > 0) {
+						this.y = this.y + gameContainer.conf.get('gridSize');
+					}
+					
+				
+					//trigger moved event
+					if(this.x !== orgX || this.y !== orgY) {
+						this.trigger('Moved', { x: orgX, y: orgY});
+						
+					}
+					
+					//we are nolonger moving so it's ok to change directions
+					changingDirections = false;
 				}
 				
             })
 			.bind("NewDirection",
 				function (direction) {
 					currDirection = direction;
+					changingDirections = true;
 					//console.log(currDirection);
 				})
             .bind('Moved', function(from) {
 				if(hitByFruit = this.hit('Fruit')) {
 					//console.log(hitByFruit);
+					model.set({'eatenThisLevel': model.get('eatenThisLevel') + 1});
+					model.set({'score': model.get('score') + (model.get('eatenThisLevel') * 100)});
 					if(model.get('eatenThisLevel') < theWorld.get('maxEaten')) {
 						theWorld.placeFruit();
 						model.grow(model.get('nextGrowAmount'));
 						model.set({'nextGrowAmount': model.get('nextGrowAmount') + 4});
-						model.set({'eatenThisLevel': model.get('eatenThisLevel') + 1});
-						model.set({'score': model.get('score') + model.get('eatenThisLevel')});
 					} else {
 						Crafty.trigger('NextLevel');
 					}
@@ -91,13 +103,13 @@ Snake = BaseEntity.extend({
 				if(this.hit('Solid')){
 					//console.log(hitArray); 
 					this.attr({x: from.x, y:from.y});
-					if (model.get('lives') > 1) {
+					model.set({'lives': model.get('lives') - 1});
+					if (model.get('lives') > 0) {
 						infobox = new Infobox({'text': model.get('name') + " Dies! Push Space! --->", 'actionToTrigger': 'LevelRestart'});
-						model.set({'lives': model.get('lives') - 1});
 						currDirection = {x:0, y:0};
 					} else {
-						alert("Your Dead");
-						Crafty.scene("main");
+						model.set({'playable': false});
+						infobox = new Infobox({'text': "Game Over, Push Space", 'actionToTrigger': 'EndGame'});
 					}
 					//theWorld.died(this);
 				} else { 
@@ -133,6 +145,12 @@ Snake = BaseEntity.extend({
 			.bind("LevelRestart", function () {
 				model.reset();
 			})
+			.bind("LevelStart", function () {
+				model.set({'playable': true});
+			})
+			.bind("PauseSnakes", function () {
+				model.set({'playable': false});
+			})
             .setName('Snake');
 			
     	model.set({'entity' : entity });
@@ -147,9 +165,9 @@ Snake = BaseEntity.extend({
 		this.set({'bodySize': this.get('bodySize') + amount});
 	},
 	reset: function () {
-		
+		//this.set({'playable': false});
 		this.get('entity').attr({x: this.get('startX'), y: this.get('startY')});
-		
+		this.get('entity').trigger("NewDirection", this.get('startDir'));
 		//destory old body
 		//for ( i in this.get('body') ) {
 		//	this.get('body')[i].get('entity').destroy();
@@ -164,7 +182,7 @@ Snake = BaseEntity.extend({
 		this.set({'bodySize': this.get('body').length});
 		this.set({'nextGrowAmount' : this.defaults.nextGrowAmount});
 		this.set({'eatenThisLevel' : this.defaults.eatenThisLevel});
-		currDirection = {x:0, y:0};
+		
 		
 		
 	}
