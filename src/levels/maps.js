@@ -75,6 +75,15 @@ Maps = Backbone.Model.extend ({
 						'name' : 'Three',
 						'startDir' : {'x' : 0, 'y': -1}
 					}),
+		'level4' : new Level({
+						'map' : [],
+						'width' : 80,
+						'height' : 47,
+						'startRow' : 7,
+						'startCol' : 60,
+						'name' : 'Four',
+						'startDir' : {'x' : -1, 'y': 0}
+					}),
 					
     },
     initialize: function(){
@@ -102,14 +111,18 @@ Maps = Backbone.Model.extend ({
 					this.get(mapName).get('map')[i][60] = 1;
 				}
 				break;
+			case 'level4' :
+				for (i = 4; i < 30; i++) {
+					this.get(mapName).get('map')[i][20] = 1;
+					this.get(mapName).get('map')[53 - i][60] = 1;
+				}
+				for (i = 2; i < 40; i++) {
+					this.get(mapName).get('map')[38][i] = 1;
+					this.get(mapName).get('map')[15][81 - i] = 1;
+				}
+				break;
+					
 		}
-		
-		//create map
-		//for (i = 0; i < this.get(mapName).get('height'); i++) {
-		//	for (j = 0; j < this.get(mapName).get('width'); j++) {
-		//		
-		//	}
-		//}
 		
 		return this.get(mapName);
 		

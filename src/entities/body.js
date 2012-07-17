@@ -8,7 +8,7 @@ Body = BaseEntity.extend({
     },
     initialize: function(){
     	var model = this;
-    	var entity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Collision, Color, Body");
+    	var entity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Collision, Color, Body, Solid");
 		
     	entity
             .attr({w: gameContainer.conf.get('gridSize'), h: gameContainer.conf.get('gridSize'), x: model.get('posX'), y: model.get('posY'), z: 500})

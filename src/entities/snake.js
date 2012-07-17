@@ -28,6 +28,7 @@ Snake = BaseEntity.extend({
             .attr({w: gameContainer.conf.get('gridSize'), h: gameContainer.conf.get('gridSize'), z: 500})
 			.color(model.get('color'))
 			.bind('KeyDown', function () {
+				
 				if(changingDirections !== true && model.get('playable') === true) {	//if we are not currently in between snake moves
 					
 					if(this.isDown('A') || this.isDown('LEFT_ARROW') && currDirection.x !== 1) {
@@ -49,9 +50,9 @@ Snake = BaseEntity.extend({
 				}
 			})
 			.bind('EnterFrame', function(e){
-				 if(Crafty.frame() % 5 !== 0) {return;} //SLOW DOWN
-				
-				if (model.get('playable') === true) { 
+			
+				 if(Crafty.frame() % 4 === 0 && model.get("playable") === true) { //SLOW DOWN
+				 
 				
 					var orgX = this.x;
 					var orgY = this.y;
@@ -69,7 +70,6 @@ Snake = BaseEntity.extend({
 						this.y = this.y + gameContainer.conf.get('gridSize');
 					}
 					
-				
 					//trigger moved event
 					if(this.x !== orgX || this.y !== orgY) {
 						this.trigger('Moved', { x: orgX, y: orgY});
@@ -79,7 +79,6 @@ Snake = BaseEntity.extend({
 					//we are nolonger moving so it's ok to change directions
 					changingDirections = false;
 				}
-				
             })
 			.bind("NewDirection",
 				function (direction) {
@@ -97,59 +96,40 @@ Snake = BaseEntity.extend({
 						model.grow(model.get('nextGrowAmount'));
 						model.set({'nextGrowAmount': model.get('nextGrowAmount') + 4});
 					} else {
+						Crafty.trigger('PauseSnakes');
 						Crafty.trigger('NextLevel');
 					}
-				} 
-				if(this.hit('Solid')){
-					//console.log(hitArray); 
-					this.attr({x: from.x, y:from.y});
-					model.set({'lives': model.get('lives') - 1});
-					if (model.get('lives') > 0) {
-						infobox = new Infobox({'text': model.get('name') + " Dies! Push Space! --->", 'actionToTrigger': 'LevelRestart'});
-						currDirection = {x:0, y:0};
-					} else {
-						model.set({'playable': false});
-						infobox = new Infobox({'text': "Game Over, Push Space", 'actionToTrigger': 'EndGame'});
-					}
-					//theWorld.died(this);
-				} else { 
-						//move body parts
-						var oldX = 0;
-						var oldY = 0;
-						for (i = 0; i < model.get('bodySize'); i++) {
-							if(i === 0) {
-								var prevX = from.x;
-								var prevY = from.y;
-								//prevDirection = currDirection;
-							} else {
-								//prevDirection = model.get('body')[i - 1].get('currDirection');
-							}							
-							if(typeof model.get('body')[i] !== 'object') { //if this is a new body piece
-									model.get('body')[i] = new Body({'posX': prevX, 'posY': prevY});
-									oldX = prevX;
-									oldY = prevY;
-							} else {
-								//move body part		
-								oldX = model.get('body')[i].get('entity').x;
-								oldY = model.get('body')[i].get('entity').y;
-								model.get('body')[i].get('entity').x = prevX;
-								model.get('body')[i].get('entity').y = prevY;
-							}
-							prevX = oldX;
-							prevY = oldY;
-						}	
-							
 				}
-				
+
+				if(model.get('playable') === true) {		
+					if(hitArray = this.hit('Solid')){
+						console.log(hitArray); 
+						this.attr({x: from.x, y:from.y});
+						model.set({'lives': model.get('lives') - 1});
+						if (model.get('lives') > 0) {
+							Crafty.trigger("PauseSnakes");
+							infobox = new Infobox({'text': model.get('name') + " Dies! Push Space! --->", 'actionToTrigger': 'LevelRestart'});
+							currDirection = {x:0, y:0};
+						} else {
+							Crafty.trigger("PauseSnakes");
+							infobox = new Infobox({'text': "Game Over, Push Space", 'actionToTrigger': 'EndGame'});
+						}
+						//theWorld.died(this);
+					} else { 
+							//move body parts	
+							model.moveBody(from);	
+					}
+				}
 			})
 			.bind("LevelRestart", function () {
-				model.reset();
-			})
-			.bind("LevelStart", function () {
-				model.set({'playable': true});
+				//model.reset();
 			})
 			.bind("PauseSnakes", function () {
-				model.set({'playable': false});
+				if (model.get('playable') === true) {
+					model.set({'playable': false});
+				} else {
+					model.set({'playable': true});
+				}
 			})
             .setName('Snake');
 			
@@ -159,6 +139,33 @@ Snake = BaseEntity.extend({
 		this.reset();
 		
     },
+	moveBody: function (from) {
+		var oldX = 0;
+		var oldY = 0;
+		for (i = 0; i < this.get('bodySize'); i++) {
+			if(i === 0) {
+				var prevX = from.x;
+				var prevY = from.y;
+				//prevDirection = currDirection;
+			} else {
+				//prevDirection = model.get('body')[i - 1].get('currDirection');
+			}							
+			if(typeof this.get('body')[i] !== 'object') { //if this is a new body piece
+					this.get('body')[i] = new Body({'posX': prevX, 'posY': prevY});
+					oldX = prevX;
+					oldY = prevY;
+			} else {
+				//move body part		
+				oldX = this.get('body')[i].get('entity').x;
+				oldY = this.get('body')[i].get('entity').y;
+				this.get('body')[i].get('entity').x = prevX;
+				this.get('body')[i].get('entity').y = prevY;
+			}
+			prevX = oldX;
+			prevY = oldY;
+		}
+	
+	},
 	//grow function
 	grow: function (amount) {
 		var amount = typeof amount !== 'undefined' ? amount : 1;
@@ -169,21 +176,18 @@ Snake = BaseEntity.extend({
 		this.get('entity').attr({x: this.get('startX'), y: this.get('startY')});
 		this.get('entity').trigger("NewDirection", this.get('startDir'));
 		//destory old body
-		//for ( i in this.get('body') ) {
-		//	this.get('body')[i].get('entity').destroy();
-		//}
-		
+		//if(typeof Crafty("Body") !== 'undefined') (Crafty("Body").destroy());
 		var bodyArray = [];
-		bodyArray[0] = new Body();
-		bodyArray[1] = new Body();
-		bodyArray[0].get('entity').attr({x: this.get('entity').x - gameContainer.conf.get('gridSize'), y: this.get('entity').y}); 
-		bodyArray[1].get('entity').attr({x: this.get('entity').x - gameContainer.conf.get('gridSize') * 2, y: this.get('entity').y});
-		this.set({'body': bodyArray});
-		this.set({'bodySize': this.get('body').length});
+		//bodyArray[0] = new Body();
+		//bodyArray[0].get('entity').attr({x: this.get('entity').x + (this.get('startDir').x * gameContainer.conf.get('gridSize')),
+		//								 y: this.get('entity').y + (this.get('startDir').y * gameContainer.conf.get('gridSize'))}); 
+		//bodyArray[1].get('entity').attr({x: this.get('entity').x - gameContainer.conf.get('gridSize') * 2, 
+		//								y: this.get('entity').y});
+		this.set({'body': []});
+		this.set({'bodySize': 1});
 		this.set({'nextGrowAmount' : this.defaults.nextGrowAmount});
 		this.set({'eatenThisLevel' : this.defaults.eatenThisLevel});
-		
-		
+		//this.moveBody({x: this.get('startX'), y: this.get('startY')});
 		
 	}
 });

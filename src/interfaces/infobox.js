@@ -41,7 +41,7 @@ Infobox = BaseEntity.extend({
 				}
 			})
 			.bind('EnterFrame', function() {
-			if(!Crafty.isPaused()) { Crafty.pause() };
+			//if(!Crafty.isPaused()) { setTimeout(function(){Crafty.pause();});};
 				//var infoText = model.get('name') + " --> &nbsp&nbsp&nbsp Lives: " + model.get('lives') + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" +  model.get('score');
 				//this.text(infoText);
 			})

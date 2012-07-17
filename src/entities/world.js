@@ -24,16 +24,21 @@ World = BaseEntity.extend({
 				if(this.isDown('SPACE')) {
 					//Crafty.pause(); //must fix pause timer bug in Crafty before we can pause the game
 				}
+				if(this.isDown('L')) {
+					Crafty.trigger('PauseSnakes');
+					Crafty.trigger('NextLevel');
+					//this.trigger('NextLevel');
+				}
 			})
 			.bind('LevelRestart', function () {
 				model.startLevel( function () {
-					infobox = new Infobox({'text': "Level " +  model.get('currentLevel').get('name') + " Push Space",  "actionToTrigger" : "LevelStart"});
+					infobox = new Infobox({'text': "Level " +  model.get('currentLevel').get('name') + " Push Space",  "actionToTrigger" : "PauseSnakes"});
 				});
 				
 			})
 			.bind('NextLevel', function () {
 				model.set({'currentLevelNum' : model.get('currentLevelNum') + 1});
-				Crafty.trigger('LevelRestart');
+				Crafty.trigger("LevelRestart");
 			})
 			.bind('EndGame', function () {
 				model.endGame();
@@ -45,7 +50,7 @@ World = BaseEntity.extend({
 		//Crafty.trigger("PauseSnakes");
 		model.startLevel(function () {
 				//Crafty("World").trigger('LevelRestart');
-				infobox = new Infobox({'text': "Level " +  model.get('currentLevel').get('name') + " Push Space", "actionToTrigger" : "LevelStart"});
+				infobox = new Infobox({'text': "Level " +  model.get('currentLevel').get('name') + " Push Space", "actionToTrigger" : "PauseSnakes"});
 		});
 		//Crafty.pause();
 		
@@ -132,6 +137,7 @@ World = BaseEntity.extend({
 			sc['player1'] = new Snake({'startX': startX, 'startY': startY, 'startDir' : startDir});
 		} else {
 			sc['player1'].set({'startX': startX, 'startY': startY, 'startDir' : startDir});
+			sc['player1'].reset();
 		}
 		if(typeof infc['scorePlayer1'] !== 'object') { 
 			infc['scorePlayer1'] = new Scorebox({'name': sc['player1'].get('name')});
@@ -140,24 +146,5 @@ World = BaseEntity.extend({
 	updateScores: function () {
 		infc['scorePlayer1'].set({'score' : sc['player1'].get('score'),'lives' : sc['player1'].get('lives')});
 	},
-	//died: function(playerObj) {
-	//	//var playerObj = sc[playerObjName];
-	//	var oldPlayerLives = playerObj.model.get('lives');
-	//	var oldPlayerScore = playerObj.model.get('score');
-	//	var oldPlayerScore = playerObj.model.get('name');
-	//	
-	//	//destory the player and all body element
-	//	
-	//	//destroy head and body
-	//	for (i in playerObj.model.get('body')) {
-	//		playerObj.model.get('body')[i].get('entity').destroy();
-	//	}
-	//	playerObj.model.get('entity').destroy();
-	//	
-	//	if (playerObj.model.get('lives') > 1) {
-	//		playerObj.model.set({'lives': sc[playerObjName].get('lives') - 1});
-	//	}
-	//		
-	//}
 
 });
