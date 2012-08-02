@@ -31,16 +31,16 @@ Snake = BaseEntity.extend({
 				
 				if(changingDirections !== true && model.get('playable') === true) {	//if we are not currently in between snake moves
 					
-					if(this.isDown('A') || this.isDown('LEFT_ARROW') && currDirection.x !== 1) {
+					if(this.isDown('A') || this.isDown('LEFT_ARROW') && currDirection.x !== 1 && currDirection.x !== -1) {
 						this.trigger('NewDirection', {x: -1, y: 0});
-					} else
-					if(this.isDown('S') || this.isDown('DOWN_ARROW')  && currDirection.y !== -1) {
+					} else 
+					if(this.isDown('S') || this.isDown('DOWN_ARROW')  && currDirection.y !== -1 && currDirection.y !== 1) {
 						this.trigger('NewDirection', {x: 0, y: 1});
-					} else
-					if(this.isDown('D')  || this.isDown('RIGHT_ARROW')  && currDirection.x !== -1) {
+					} else 
+					if(this.isDown('D')  || this.isDown('RIGHT_ARROW')  && currDirection.x !== -1 && currDirection.x !== 1) {
 						this.trigger('NewDirection', {x: 1, y: 0});
-					} else
-					if(this.isDown('W')  || this.isDown('UP_ARROW')  && currDirection.y !== 1) {
+					} else 
+					if(this.isDown('W')  || this.isDown('UP_ARROW')  && currDirection.y !== 1 && currDirection.y !== -1) {
 						this.trigger('NewDirection', {x: 0, y: -1});
 					}
 				
