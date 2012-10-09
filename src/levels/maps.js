@@ -176,25 +176,26 @@ Maps = Backbone.Model.extend ({
 				}
 				break;
 			case 'level5' :
-				for (i = 13; i < 39; i++) {
-					this.get(mapName).get('map')[i][21] = 1;
-					this.get(mapName).get('map')[i][59] = 1;
+				for (i = 12; i < 39; i++) {
+					this.get(mapName).get('map')[i - 2][21] = 1;
+					this.get(mapName).get('map')[i - 2][59] = 1;
 				}
-				for (i = 23; i < 57; i++) {
-					this.get(mapName).get('map')[11][i] = 1;
-					this.get(mapName).get('map')[41][i] = 1;
+				for (i = 23; i < 58; i++) {
+					this.get(mapName).get('map')[11 - 3][i] = 1;
+					this.get(mapName).get('map')[41 - 3][i] = 1;
 				}
 				break;
 			case 'level6' :
+                                var offs = 1;
 				for (i = 13; i < 39; i++) {
 					if ( i > 30 || i < 23 ) { 
-						this.get(mapName).get('map')[i - 3][10] = 1;
-						this.get(mapName).get('map')[i - 3][20] = 1;
-						this.get(mapName).get('map')[i - 3][30] = 1;
-						this.get(mapName).get('map')[i - 3][40] = 1;
-						this.get(mapName).get('map')[i - 3][50] = 1;
-						this.get(mapName).get('map')[i - 3][60] = 1;
-						this.get(mapName).get('map')[i - 3][70] = 1;
+						this.get(mapName).get('map')[i - 3][10 - offs] = 1;
+						this.get(mapName).get('map')[i - 3][20 - offs] = 1;
+						this.get(mapName).get('map')[i - 3][30 - offs] = 1;
+						this.get(mapName).get('map')[i - 3][40 - offs] = 1;
+						this.get(mapName).get('map')[i - 3][50 - offs] = 1;
+						this.get(mapName).get('map')[i - 3][60 - offs] = 1;
+						this.get(mapName).get('map')[i - 3][70 - offs] = 1;
 					}
 				}
 				break;
@@ -204,15 +205,16 @@ Maps = Backbone.Model.extend ({
 				}
 				break;
 			case 'level8' :
+                                var offs = 1;
 				for (i = 4; i < 40; i++) {
 					
-					this.get(mapName).get('map')[i - 3][10] = 1;
-					this.get(mapName).get('map')[53 - i - 3][20] = 1;
-					this.get(mapName).get('map')[i - 3][30] = 1;
-					this.get(mapName).get('map')[53 - i - 3][40] = 1;
-					this.get(mapName).get('map')[i - 3][50] = 1;
-					this.get(mapName).get('map')[53 - i - 3][60] = 1;
-					this.get(mapName).get('map')[i - 3][70] = 1;
+					this.get(mapName).get('map')[i - 3][10 - offs] = 1;
+					this.get(mapName).get('map')[53 - i - 3][20 - offs] = 1;
+					this.get(mapName).get('map')[i - 3][30 - offs] = 1;
+					this.get(mapName).get('map')[53 - i - 3][40 - offs] = 1;
+					this.get(mapName).get('map')[i - 3][50 - offs] = 1;
+					this.get(mapName).get('map')[53 - i - 3][60 - offs] = 1;
+					this.get(mapName).get('map')[i - 3][70 - offs] = 1;
 				}
 				break;
 			case 'level9' : 
@@ -222,15 +224,16 @@ Maps = Backbone.Model.extend ({
 				}
 				break;
 			case 'level10' :
+                                var offs = 1;
 				for (i = 4; i < 47; i = i + 2) {
 					
-					this.get(mapName).get('map')[i - 3][10] = 1;
-					this.get(mapName).get('map')[1 + i - 3][20] = 1;
-					this.get(mapName).get('map')[i - 3][30] = 1;
-					this.get(mapName).get('map')[1 + i - 3][40] = 1;
-					this.get(mapName).get('map')[i - 3][50] = 1;
-					this.get(mapName).get('map')[1 + i - 3][60] = 1;
-					this.get(mapName).get('map')[i - 3][70] = 1;
+					this.get(mapName).get('map')[i - 3][10 - offs] = 1;
+					this.get(mapName).get('map')[1 + i - 3][20 - offs] = 1;
+					this.get(mapName).get('map')[i - 3][30 - offs] = 1;
+					this.get(mapName).get('map')[1 + i - 3][40 - offs] = 1;
+					this.get(mapName).get('map')[i - 3][50 - offs] = 1;
+					this.get(mapName).get('map')[1 + i - 3][60 - offs] = 1;
+					this.get(mapName).get('map')[i - 3][70 - offs] = 1;
 				}
 				break;
 		}
