@@ -61,13 +61,16 @@ World = BaseEntity.extend({
 		//Crafty("Snake").destory();
 		//Crafty("Fruit").destroy();
 		//Crafty("Body").destroy();
-		delete sc['player1'];
-		delete infc['scorePlayer1'];
-		delete sc['floor'];
+		//delete sc['player1'];
+		//delete infc['scorePlayer1'];
+		//delete sc['floor'];
 		//this.get('entity').destory();
 		//this.set({'currentLevelNum' : 1});
 		//Crafty.trigger('LevelRestart');
-		Crafty.scene("main");
+		//Stop Crafty
+                Crafty.stop();
+                //reload the page to cleanly restart the game
+                window.location.reload()
 	},
 	startLevel: function (callback) {
 		var levelName = 'level' + this.get('currentLevelNum'); 
