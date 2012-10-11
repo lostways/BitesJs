@@ -7,7 +7,7 @@ Holds game states
 World = BaseEntity.extend({
 	 defaults: {
         'currentLevel': null,
-		'maxEaten': 2,
+		'maxEaten': 10,
 		'numPlayers': 1,
 		'currentLevelNum': 1,
 		'maxLevels' : 10,
@@ -100,7 +100,7 @@ World = BaseEntity.extend({
 		var levelName = 'level' + this.get('currentLevelNum'); 
 		console.log(levelName);
 		this.loadMap(levelName,this.displayMap);
-		this.placeFruit();
+		this.placeFruit(1);
 		this.placeSnake();
 		this.updateScores();
 
@@ -146,14 +146,14 @@ World = BaseEntity.extend({
 		
 		
 	},
-	placeFruit: function () {
+	placeFruit: function (fruitNumber) {
 		//place fruit
 		do {	
 			var fruitX = Crafty.math.randomInt(1, this.get('currentLevel').get('width') - 1);
 			var fruitY = Crafty.math.randomInt(4, this.get('currentLevel').get('height') - 1);
 		} while (this.get('currentLevel').get('map')[fruitY][fruitX] === 1)
 		
-		sc['fruit'] = new Fruit({'posX':fruitX * gameContainer.conf.get('gridSize'), 'posY':(fruitY + 3) * gameContainer.conf.get('gridSize')});
+		sc['fruit'] = new Fruit({'posX':fruitX * gameContainer.conf.get('gridSize'), 'posY':(fruitY + 3) * gameContainer.conf.get('gridSize'), 'number':fruitNumber});
 	},
 	placeSnake: function() {
 		var startX = this.get('currentLevel').get('startCol') * gameContainer.conf.get('gridSize');

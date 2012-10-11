@@ -92,7 +92,7 @@ Snake = BaseEntity.extend({
 					model.set({'eatenThisLevel': model.get('eatenThisLevel') + 1});
 					model.set({'score': model.get('score') + (model.get('eatenThisLevel') * 100)});
 					if(model.get('eatenThisLevel') < theWorld.get('maxEaten')) {
-						theWorld.placeFruit();
+						theWorld.placeFruit(model.get('eatenThisLevel') + 1);
 						model.grow(model.get('nextGrowAmount'));
 						model.set({'nextGrowAmount': model.get('nextGrowAmount') + 4});
 					} else {
