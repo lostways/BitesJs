@@ -10,7 +10,8 @@ World = BaseEntity.extend({
 		'maxEaten': 2,
 		'numPlayers': 1,
 		'currentLevelNum': 1,
-		'maxLevels' : 9,
+		'maxLevels' : 10,
+                'state' : null
     },
     initialize: function(){
     	var model = this;
@@ -22,8 +23,12 @@ World = BaseEntity.extend({
             })
 			.bind('KeyDown', function() {
 				if(this.isDown('SPACE')) {
-					//Crafty.pause(); //must fix pause timer bug in Crafty before we can pause the game
-				}
+                                        if (model.get("state") == "PLAYING") {
+                                            Crafty.trigger('PauseSnakes');
+                                            infobox = new Infobox({'text': "Game Paused ... Push Space",  "actionToTrigger" : "PauseSnakes"});
+                                            //Crafty.pause(); //must fix pause timer bug in Crafty before we can pause the game
+                                        }
+                                }
 				if(this.isDown('L')) {
 					Crafty.trigger('PauseSnakes');
 					Crafty.trigger('NextLevel');
@@ -38,11 +43,30 @@ World = BaseEntity.extend({
 			})
 			.bind('NextLevel', function () {
 				model.set({'currentLevelNum' : model.get('currentLevelNum') + 1});
-				Crafty.trigger("LevelRestart");
+                                if(model.get('currentLevelNum') > model.get('maxLevels')) {
+                                    Crafty.trigger("WonTheGame");
+                                } else { 
+                                    Crafty.trigger("LevelRestart");
+                                }
 			})
 			.bind('EndGame', function () {
 				model.endGame();
 			})
+                        .bind('WonTheGame', function () {
+                            Crafty("Snake").destroy();
+                            Crafty("Body").destroy();
+                            Crafty("Fruit").destroy();
+                            infobox = new Infobox({'text': "YOU WON ALL THE THINGS!!!!!1!!!", "actionToTrigger" : "EndGame"});
+                            
+                        })
+                        .bind('PauseSnakes', function () {
+                            if(model.get('state') == "PLAYING") {
+                                model.set({'state' : "PAUSED"});
+                            } else {
+                                model.set({'state' : "PLAYING"});
+                            }
+                            
+                        })
             .setName('World');
     	model.set({'entity' : entity });
 				
@@ -79,7 +103,7 @@ World = BaseEntity.extend({
 		this.placeFruit();
 		this.placeSnake();
 		this.updateScores();
-		
+
 		if(typeof callback === 'function') {
 			callback();
 		}

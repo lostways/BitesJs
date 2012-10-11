@@ -118,7 +118,7 @@ Maps = Backbone.Model.extend ({
 						'startRow' : 7,
 						'startCol' : 65,
 						'name' : 'Eight',
-						'startDir' : {'x' : 0, 'y': -1}
+						'startDir' : {'x' : 0, 'y': 1}
 					}),
 		'level9' : new Level({
 						'map' : [],
@@ -134,9 +134,9 @@ Maps = Backbone.Model.extend ({
 						'width' : 80,
 						'height' : 47,
 						'startRow' : 7,
-						'startCol' : 75,
+						'startCol' : 65,
 						'name' : 'Ten',
-						'startDir' : {'x' : 0, 'y': -1}
+						'startDir' : {'x' : 0, 'y': 1}
 					}),
 					
     },
