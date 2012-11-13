@@ -1,8 +1,8 @@
-/* Enity for a wall block */
+/* Enity for a body block */
 
 Body = BaseEntity.extend({
 	defaults: {
-		'color': 'FFFF55',
+		'color': '#FFFF55',
 		'posX': 0,
 		'posY': 0,
     },

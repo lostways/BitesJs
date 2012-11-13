@@ -2,7 +2,7 @@
 
 Fruit = BaseEntity.extend({
 	defaults: {
-		'color': 'red',
+		'color': '#FF0000',
 		'posX' : 0,
 		'posY' : 0,
                 'number' : 1
