@@ -11,7 +11,7 @@ Infobox = BaseEntity.extend({
 		var model = this;
     	var entity = Crafty.e("2D, DOM, Text, Keyboard");
 		if (this.get('posX') === null) { this.set({'posX': (gameContainer.conf.get('stageWidth') / 2) - 250}); }
-    	if (this.get('posY') === null) { this.set({'posY': gameContainer.conf.get('stageHeight') / 2 }); }
+    	if (this.get('posY') === null) { this.set({'posY': (gameContainer.conf.get('stageHeight') / 2) - 35 }); }
 		entity.visible = 'false';
 		entity
 			.attr({x: model.get('posX'), y: model.get('posY'), w: 500,h:35, z: 10000})
@@ -19,9 +19,9 @@ Infobox = BaseEntity.extend({
             //.textColor('#FFF')
             //.textFont({'size' : '10px', 'family': 'Arial'})
 			.css({	'font-size' : '20px', 
-					'font-family': 'Arial',
+					'font-family': 'EGA',
 					'text-align': 'center', 
-					'valign': 'middle',
+					'padding-top': '10px',
 					'border': 'solid 10px #FFF', 
 					'background-color' : 'red',
 					'color' : '#FFF'	

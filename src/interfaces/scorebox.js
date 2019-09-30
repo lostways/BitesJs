@@ -14,12 +14,12 @@ Scorebox = BaseEntity.extend({
             //.text(infoText)
             //.textColor('#FFF')
             //.textFont({'size' : '20px', 'family': 'Arial'})
-			.css({fontSize : '15px', 'font-family': 'Arial','text-align': 'right','background-color' : 'blue','color' : '#FFF'})
+			.css({'font-size' : '20px', 'font-family': 'EGA','text-align': 'right','background-color' : 'blue','color' : '#FFF', 'line-height': '26px'})
             .bind('Click', function(){
                                 
             })
 			.bind('EnterFrame', function() {
-				var infoText = model.get('name') + " --> &nbsp&nbsp&nbsp Lives: " + model.get('lives') + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" +  model.get('score');
+				var infoText = model.get('name') + "-->&nbsp&nbspLives: " + model.get('lives') + "&nbsp&nbsp&nbsp&nbsp&nbsp" +  model.get('score');
 				this.text(infoText);
 			})
 

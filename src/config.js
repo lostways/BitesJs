@@ -1,6 +1,6 @@
 Config = Backbone.Model.extend({
     defaults: {
-        'renderType' : 'Canvas',
+        'renderType' : 'WebGL',
 		'stageWidth' : 800,
 		'stageHeight' : 500,
 		'gridSize' : 10,
