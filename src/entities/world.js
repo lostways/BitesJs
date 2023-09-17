@@ -7,7 +7,7 @@ Holds game states
 World = BaseEntity.extend({
 	 defaults: {
         'currentLevel': null,
-		'maxEaten': 3,
+		'maxEaten': 9,
 		'numPlayers': 1,
 		'currentLevelNum': 1,
 		'maxLevels' : 10,

@@ -13,7 +13,6 @@ window.onload = function() {
 	
 	
 	require([
-	         "src/sprites.js?v="+version+"",
 	         "src/config.js?v="+version+"",
 	], function() {
 	
@@ -21,12 +20,12 @@ window.onload = function() {
 		gameContainer['conf'] = new Config({});
 		
 		//start Crafty
-		Crafty.init(gameContainer.conf.get('stageWidth'), gameContainer.conf.get('stageHeight'));
+		Crafty.init(
+      gameContainer.conf.get('stageWidth'),
+      gameContainer.conf.get('stageHeight'),
+      document.getElementById('game')
+    );
 	
-		// Create Sprites
-		var sprites = new Sprites();
-		sprites.create();
-
 				
 		//the loading screen - that will be display while assets loaded
 		Crafty.scene("loading", function() {

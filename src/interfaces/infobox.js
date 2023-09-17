@@ -18,7 +18,7 @@ Infobox = BaseEntity.extend({
             .text(model.get('text'))
             //.textColor('#FFF')
             //.textFont({'size' : '10px', 'family': 'Arial'})
-			.css({	'font-size' : '20px', 
+			.css({	'font-size' : '25px', 
 					'font-family': 'EGA',
 					'text-align': 'center', 
 					'padding-top': '10px',
@@ -26,6 +26,7 @@ Infobox = BaseEntity.extend({
 					'background-color' : 'red',
 					'color' : '#FFF'	
 				})
+            .unselectable()
             .bind('Click', function(){
                                 
             })
