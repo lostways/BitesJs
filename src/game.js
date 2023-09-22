@@ -47,6 +47,7 @@ window.onload = function() {
                 var elements = [
                     "src/components/MouseHover.js?v="+version+"",
                     "src/entities/base/BaseEntity.js?v="+version+"",
+                    "src/scenes/main.js?v="+version+"",
 	    		];
 
     			//when everything is loaded, run the main scene
