@@ -45,7 +45,6 @@ window.onload = function() {
 			Crafty.load({}, function() {
 				// array with local components
                 var elements = [
-                    "src/components/MouseHover.js?v="+version+"",
                     "src/entities/base/BaseEntity.js?v="+version+"",
                     "src/scenes/main.js?v="+version+"",
 	    		];
@@ -62,13 +61,6 @@ window.onload = function() {
 				loadingText.text('Loading ('+(e.percent.toFixed(0))+'%)');
 			});
 		});
-		
-		// declare all scenes
-		var scenes = [
-			"src/scenes/main.js?v="+version+"",
-		];
-		
-		require(scenes, function(){});
 		
 		//automatically play the loading scene
 		Crafty.scene("loading");

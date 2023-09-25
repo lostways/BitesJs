@@ -1,7 +1,7 @@
 Crafty.scene("main", function() {
 
 	var elements = [
-        "src/entities/wall.js",
+    "src/entities/wall.js",
 		"src/entities/floor.js",
 		"src/entities/fruit.js",
 		"src/entities/body.js",
