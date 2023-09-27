@@ -43,18 +43,27 @@ window.onload = function() {
 		
 			// load takes an array of assets and a callback when complete
 			Crafty.load({}, function() {
+
 				// array with local components
                 var elements = [
-                    "src/entities/base/BaseEntity.js?v="+version+"",
-                    "src/scenes/main.js?v="+version+"",
+                  "src/entities/base/BaseEntity.js",
+                  "src/entities/world.js",
+                  "src/levels/maps.js",
+                  "src/levels/level.js",
+                  "src/interfaces/infobox.js",
+                  "src/interfaces/scorebox.js",
+                  "src/scenes/main.js",
 	    		];
 
     			//when everything is loaded, run the main scene
     			require(elements, function() {	   
-    				loadingText.destroy();
-    				if (gameContainer.scene != undefined) {
-    					Crafty.scene(gameContainer.scene);
-    				}
+            //sleep for 1 seconds
+            setTimeout(function() {
+              loadingText.destroy();
+              if (gameContainer.scene != undefined) {
+                Crafty.scene(gameContainer.scene);
+              }
+            }, 1000);
     			});
     		},
 			function(e) {

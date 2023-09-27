@@ -1,6 +1,7 @@
 Crafty.scene("main", function() {
 
 	var elements = [
+    "src/entities/base/BaseEntity.js",
     "src/entities/wall.js",
 		"src/entities/floor.js",
 		"src/entities/fruit.js",
