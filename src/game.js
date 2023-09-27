@@ -57,13 +57,13 @@ window.onload = function() {
 
     			//when everything is loaded, run the main scene
     			require(elements, function() {	   
-            //sleep for 1 seconds
+            //sleep for 3 seconds
             setTimeout(function() {
               loadingText.destroy();
               if (gameContainer.scene != undefined) {
                 Crafty.scene(gameContainer.scene);
               }
-            }, 1000);
+            }, 3000);
     			});
     		},
 			function(e) {
